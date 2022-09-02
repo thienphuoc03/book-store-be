@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.htphuoc.bookstore.repository.ApiResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -77,13 +76,6 @@ public class ApiExceptionHandler {
 				ex.getMessage(), request.getRequestURI());
 
 		return errorDetails;
-	}
-
-	@ExceptionHandler(BadRequestException.class)
-	public ResponseEntity<ApiResponse> resolveException(BadRequestException exception) {
-		ApiResponse apiResponse = exception.getApiResponse();
-
-		return new ResponseEntity<>(apiResponse, HttpStatus.BAD_REQUEST);
 	}
 
 	// Xử lý tất cả các exception chưa được khai báo

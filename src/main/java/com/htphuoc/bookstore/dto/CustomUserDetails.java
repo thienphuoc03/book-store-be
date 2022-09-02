@@ -3,10 +3,12 @@ package com.htphuoc.bookstore.dto;
 import java.util.Collection;
 
 import com.htphuoc.bookstore.model.User;
+import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 @SuppressWarnings("serial")
+@Data
 public class CustomUserDetails implements UserDetails {
 	User user;
 

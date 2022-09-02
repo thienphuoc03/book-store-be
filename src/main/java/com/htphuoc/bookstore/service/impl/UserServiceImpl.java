@@ -1,11 +1,10 @@
 package com.htphuoc.bookstore.service.impl;
 
 import com.htphuoc.bookstore.dto.UserDto;
-import com.htphuoc.bookstore.exception.BadRequestException;
+import com.htphuoc.bookstore.exception.AlreadyExistsException;
 import com.htphuoc.bookstore.exception.NotFoundException;
 import com.htphuoc.bookstore.model.Role;
 import com.htphuoc.bookstore.model.User;
-import com.htphuoc.bookstore.repository.ApiResponse;
 import com.htphuoc.bookstore.repository.RoleRepository;
 import com.htphuoc.bookstore.repository.UserRepository;
 import com.htphuoc.bookstore.service.UserService;
@@ -15,6 +14,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -81,15 +81,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResponseEntity<UserDto> addUser(User user) {
+    public ResponseEntity<UserDto> addUser(User user) throws Exception{
         if (userRepository.existsByUsername(user.getUsername())) {
-            ApiResponse apiResponse = new ApiResponse(Boolean.FALSE, "Username is already taken");
-            throw new BadRequestException(apiResponse);
+            throw new AlreadyExistsException("Username already exists !!!");
         }
 
         if (userRepository.existsByEmail(user.getEmail())) {
-            ApiResponse apiResponse = new ApiResponse(Boolean.FALSE, "Email is already taken");
-            throw new BadRequestException(apiResponse);
+            throw new AlreadyExistsException("Email is already taken");
         }
 
         List<Role> roles = new ArrayList<>();
@@ -101,6 +99,68 @@ public class UserServiceImpl implements UserService {
         User newUser = userRepository.save(user);
         UserDto userDto = modelMapper.map(newUser, UserDto.class);
 
-        return new ResponseEntity<>(userDto, HttpStatus.OK);
+        return new ResponseEntity<>(userDto, HttpStatus.CREATED);
     }
+
+    @Override
+    public ResponseEntity<UserDto> updateUser(Long id, User user) {
+        user.setId(id);
+        User oldUser = userRepository.findById(user.getId()).orElse(null);
+        if (oldUser != null) {
+            List<Role> roles = new ArrayList<>();
+            for (GrantedAuthority roleNames : oldUser.getAuthorities()) {
+                roles.add(roleRepository.findByName(roleNames.toString()));
+            }
+            user.setRoles(roles);
+            user.setStatus(oldUser.getStatus());
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+            user.setCreateAt(oldUser.getCreateAt());
+            oldUser = modelMapper.map(user, oldUser.getClass());
+            User updateUser = userRepository.save(oldUser);
+            UserDto userDto = modelMapper.map(updateUser, UserDto.class);
+
+            return new ResponseEntity<>(userDto, HttpStatus.CREATED);
+        }
+
+        throw new NotFoundException("Not found user in system");
+    }
+
+    @Override
+    public ResponseEntity<Object> deleteUser(Long id) {
+        User user = userRepository.findById(id).orElse(null);
+        if (user != null) {
+            userRepository.delete(user);
+            return ResponseEntity.ok("You successfully deleted user id = " + id);
+        }
+
+        throw new NotFoundException("Not found user in system");
+    }
+
+//    @Override
+//    public ResponseEntity<Object> changePassword(Long id, ChangePassword changePassword) {
+//        User user = new User();
+//        user.setId(id);
+//        User oldUser = userRepository.findById(user.getId()).orElse(null);
+//        if (oldUser != null) {
+//            String oldPass = changePassword.getOldPassword();
+//            if (userRepository.existsByPassword(oldPass)) {
+//                String newPass = changePassword.getNewPassword();
+//                String reNewPass = changePassword.getReNewPassword();
+//                if (newPass == reNewPass) {
+//                    user.setPassword(newPass);
+//                    userRepository.save(user);
+//
+//                    return ResponseEntity.ok("Change password successfully");
+//                } else {
+//                    ApiResponse apiResponse = new ApiResponse(Boolean.FALSE, "The new password is not the same");
+//                    throw new BadRequestException(apiResponse);
+//                }
+//            } else {
+//                ApiResponse apiResponse = new ApiResponse(Boolean.FALSE, "Old password is not correct");
+//                throw new BadRequestException(apiResponse);
+//            }
+//        }
+//
+//        throw new NotFoundException("Not found user in system");
+//    }
 }

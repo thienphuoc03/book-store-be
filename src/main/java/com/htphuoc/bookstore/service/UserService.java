@@ -1,7 +1,10 @@
 package com.htphuoc.bookstore.service;
 
+import com.htphuoc.bookstore.dto.ChangePassword;
+import com.htphuoc.bookstore.dto.CustomUserDetails;
 import com.htphuoc.bookstore.dto.UserDto;
 import com.htphuoc.bookstore.model.User;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
@@ -15,5 +18,11 @@ public interface UserService {
 
     ResponseEntity<Object> searchUser(String keyword);
 
-    ResponseEntity<UserDto> addUser(User user);
+    ResponseEntity<UserDto> addUser(User user) throws Exception;
+
+    ResponseEntity<UserDto> updateUser(Long id, User user);
+
+    ResponseEntity<Object> deleteUser(Long id);
+
+//    ResponseEntity<Object> changePassword(Long id, ChangePassword changePassword);
 }

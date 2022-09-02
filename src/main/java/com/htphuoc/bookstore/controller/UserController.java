@@ -4,6 +4,7 @@ import com.htphuoc.bookstore.dto.UserDto;
 import com.htphuoc.bookstore.model.User;
 import com.htphuoc.bookstore.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,7 +33,22 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<UserDto> addUser(@Valid @RequestBody User user) {
+    public ResponseEntity<UserDto> addUser(@Valid @RequestBody User user) throws Exception {
         return userService.addUser(user);
     }
+
+    @PutMapping("/update/{id}")
+    private ResponseEntity<UserDto> updateUser(@PathVariable(name = "id") Long id,@Valid @RequestBody User user) {
+        return userService.updateUser(id, user);
+    }
+
+    @DeleteMapping("/{id}")
+    private ResponseEntity<Object> deleteUser(@PathVariable(name = "id") Long id) {
+        return userService.deleteUser(id);
+    }
+
+//    @PutMapping("/updatePassword/{id}")
+//    private ResponseEntity<Object> changePassword(@PathVariable(name = "id") Long id, @RequestBody ChangePassword changePassword){
+//        return userService.changePassword(id, changePassword);
+//    }
 }
