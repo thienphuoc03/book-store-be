@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.htphuoc.bookstore.dto.CustomUserDetails;
-import com.htphuoc.bookstore.service.impl.CustomUserDetailsService;
+import com.htphuoc.bookstore.service.impl.CustomUserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -23,7 +23,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 	private JwtTokenProvider tokenProvider;
 
 	@Autowired
-	private CustomUserDetailsService userDetailsService;
+	private CustomUserDetailsServiceImpl userDetailsService;
 
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)

@@ -40,12 +40,12 @@ public class LoginController {
 		return new LoginRespone(token);
 	}
 
-	@GetMapping("api/logout")
-	public String logout(HttpServletRequest request, HttpServletResponse response) {
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		if (auth != null) {
-			new SecurityContextLogoutHandler().logout(request, response, auth);
-		}
-		return "logout";
-	}
+//	@GetMapping("api/logout")
+//	public String logout(HttpServletRequest request, HttpServletResponse response) {
+//		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+//		if (auth != null) {
+//			new SecurityContextLogoutHandler().logout(request, response, auth);
+//		}
+//		return "logout";
+//	}
 }
