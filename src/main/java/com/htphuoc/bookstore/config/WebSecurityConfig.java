@@ -45,19 +45,47 @@ public class WebSecurityConfig {
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http.csrf().disable();
+
 		// login api
 		http.authorizeRequests().antMatchers("/api/login").permitAll();
 
-		http.authorizeRequests().antMatchers(HttpMethod.GET, "/api/users*").hasAnyRole("ADMIN", "MANAGER", "EMPLOYEE")
-								.antMatchers(HttpMethod.POST, "/api/users*").hasAnyRole("ADMIN", "USER")
-								.antMatchers(HttpMethod.PUT, "/api/users/*/*").hasAnyRole("ADMIN", "MANAGER", "USER")
-								.antMatchers(HttpMethod.DELETE, "/api/users/*").hasAnyRole("ADMIN", "MANAGER");
-//								.anyRequest().authenticated();
+		http.authorizeRequests().antMatchers(HttpMethod.GET, "/api/users*")
+										.hasAnyRole("ADMIN", "MANAGER", "EMPLOYEE")
+								.antMatchers(HttpMethod.POST, "/api/users*")
+										.hasAnyRole("ADMIN", "USER")
+								.antMatchers(HttpMethod.PUT, "/api/users/*/*")
+										.hasAnyRole("ADMIN", "MANAGER", "USER")
+								.antMatchers(HttpMethod.DELETE, "/api/users/*")
+										.hasAnyRole("ADMIN", "MANAGER");
 
-		http.authorizeRequests().antMatchers(HttpMethod.GET, "/api/categories*").hasAnyRole("ADMIN", "MANAGER", "EMPLOYEE")
-								.antMatchers(HttpMethod.POST, "/api/categories*").hasAnyRole("ADMIN", "MANAGER")
-								.antMatchers(HttpMethod.PUT, "/api/categories*").hasAnyRole("ADMIN", "MANAGER")
-								.antMatchers(HttpMethod.DELETE, "/api/categories*").hasAnyRole("ADMIN", "MANAGER");
+		http.authorizeRequests().antMatchers(HttpMethod.GET, "/api/categories*")
+										.hasAnyRole("ADMIN", "MANAGER", "EMPLOYEE")
+								.antMatchers(HttpMethod.POST, "/api/categories*")
+										.hasAnyRole("ADMIN", "MANAGER")
+								.antMatchers(HttpMethod.PUT, "/api/categories*")
+										.hasAnyRole("ADMIN", "MANAGER")
+								.antMatchers(HttpMethod.DELETE, "/api/categories*")
+										.hasAnyRole("ADMIN", "MANAGER");
+
+		http.authorizeRequests().antMatchers(HttpMethod.GET, "/api/authors*")
+										.hasAnyRole("ADMIN", "MANAGER", "EMPLOYEE")
+								.antMatchers(HttpMethod.POST, "/api/authors*")
+										.hasAnyRole("ADMIN", "MANAGER")
+								.antMatchers(HttpMethod.PUT, "/api/authors*")
+										.hasAnyRole("ADMIN", "MANAGER")
+								.antMatchers(HttpMethod.DELETE, "/api/authors*")
+										.hasAnyRole("ADMIN", "MANAGER");
+
+		http.authorizeRequests().antMatchers(HttpMethod.GET, "/api/publishing-companies*")
+				.hasAnyRole("ADMIN", "MANAGER", "EMPLOYEE")
+				.antMatchers(HttpMethod.POST, "/api/publishing-companies*")
+				.hasAnyRole("ADMIN", "MANAGER")
+				.antMatchers(HttpMethod.PUT, "/api/publishing-companies*")
+				.hasAnyRole("ADMIN", "MANAGER")
+				.antMatchers(HttpMethod.DELETE, "/api/publishing-companies*")
+				.hasAnyRole("ADMIN", "MANAGER");
+
+		http.authorizeRequests().anyRequest().authenticated();
 
 		http.exceptionHandling().accessDeniedHandler(accessDeniedHandler)
 				.authenticationEntryPoint(authenticationEntryPoint);
