@@ -2,14 +2,17 @@ package com.htphuoc.bookstore.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.htphuoc.bookstore.model.Role;
-import lombok.Data;
+import lombok.*;
 
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class UserDto {
     private Long id;
 
@@ -33,10 +36,10 @@ public class UserDto {
 
     private String avatar;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @Temporal(TemporalType.TIMESTAMP)
     private Date createAt;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @Temporal(TemporalType.TIMESTAMP)
     private Date modifyAt;
 
     private Integer status;

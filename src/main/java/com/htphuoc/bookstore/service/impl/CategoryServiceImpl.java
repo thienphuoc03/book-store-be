@@ -47,9 +47,10 @@ public class CategoryServiceImpl implements CategoryService {
         newCategory.setId(id);
         Category oldCategory = categoryRepository.findById(id).orElse(null);
         if (oldCategory != null) {
+            newCategory.setCreatedAt(oldCategory.getCreatedAt());
             oldCategory = modelMapper.map(newCategory, oldCategory.getClass());
-            categoryRepository.save(oldCategory);
-            CategoryDto categoryDto = modelMapper.map(oldCategory, CategoryDto.class);
+            Category updateCategory = categoryRepository.save(oldCategory);
+            CategoryDto categoryDto = modelMapper.map(updateCategory, CategoryDto.class);
             return new ResponseEntity<>(categoryDto, HttpStatus.CREATED);
         }
 

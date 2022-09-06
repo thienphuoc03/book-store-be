@@ -1,10 +1,8 @@
 package com.htphuoc.bookstore.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Data;
+import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.security.core.GrantedAuthority;
@@ -17,6 +15,8 @@ import javax.validation.constraints.Size;
 import java.util.*;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
 @Entity
 @Table(name = "users")
@@ -43,7 +43,7 @@ public class User {
     private String name;
 
     @NotBlank
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "dob")
     private Date dob;
 
@@ -66,12 +66,12 @@ public class User {
     private String avatar;
 
     @CreatedDate
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "create_at")
     private Date createAt;
 
     @LastModifiedDate
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "modify_at")
     private Date modifyAt;
 

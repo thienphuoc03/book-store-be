@@ -54,6 +54,11 @@ public class WebSecurityConfig {
 								.antMatchers(HttpMethod.DELETE, "/api/users/*").hasAnyRole("ADMIN", "MANAGER");
 //								.anyRequest().authenticated();
 
+		http.authorizeRequests().antMatchers(HttpMethod.GET, "/api/categories*").hasAnyRole("ADMIN", "MANAGER", "EMPLOYEE")
+								.antMatchers(HttpMethod.POST, "/api/categories*").hasAnyRole("ADMIN", "MANAGER")
+								.antMatchers(HttpMethod.PUT, "/api/categories*").hasAnyRole("ADMIN", "MANAGER")
+								.antMatchers(HttpMethod.DELETE, "/api/categories*").hasAnyRole("ADMIN", "MANAGER");
+
 		http.exceptionHandling().accessDeniedHandler(accessDeniedHandler)
 				.authenticationEntryPoint(authenticationEntryPoint);
 

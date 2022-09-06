@@ -1,7 +1,8 @@
 package com.htphuoc.bookstore.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -13,6 +14,8 @@ import javax.validation.constraints.NotBlank;
 import java.util.*;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
 @Entity
 @Table(name = "categories")
@@ -26,27 +29,23 @@ public class Category {
     @Column(name = "name")
     private String name;
 
-    @NotBlank
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @Temporal(TemporalType.TIMESTAMP)
     @CreatedDate
     @Column(name = "created_at")
     private Date createdAt;
 
-    @NotBlank
     @CreatedBy
     @Column(name = "created_by")
-    private Date createdBy;
+    private String createdBy;
 
-    @NotBlank
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @Temporal(TemporalType.TIMESTAMP)
     @LastModifiedDate
     @Column(name = "modify_at")
     private Date modifyAt;
 
-    @NotBlank
     @LastModifiedBy
     @Column(name = "modify_by")
-    private Date modifyBy;
+    private String modifyBy;
 
     @ManyToMany(mappedBy = "categories")
     private List<Book> books = new ArrayList<>();

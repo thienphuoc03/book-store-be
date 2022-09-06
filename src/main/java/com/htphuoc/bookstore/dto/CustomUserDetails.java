@@ -4,11 +4,13 @@ import java.util.Collection;
 
 import com.htphuoc.bookstore.model.User;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-@SuppressWarnings("serial")
 @Data
+@NoArgsConstructor
+@SuppressWarnings("serial")
 public class CustomUserDetails implements UserDetails {
 	User user;
 

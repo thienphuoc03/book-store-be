@@ -1,13 +1,18 @@
 package com.htphuoc.bookstore.dto;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class BookDto {
     private Long id;
 
@@ -21,15 +26,15 @@ public class BookDto {
 
     private String avatar;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;
 
-    private Date createdBy;
+    private String createdBy;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @Temporal(TemporalType.TIMESTAMP)
     private Date modifyAt;
 
-    private Date modifyBy;
+    private String modifyBy;
 
     private Integer status;
 
