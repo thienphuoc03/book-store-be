@@ -44,6 +44,7 @@ public class UserServiceImpl implements UserService {
             List<User> users = userRepository.findAll(pageable).getContent();
             for (User user : users) {
                 UserDto userDto = modelMapper.map(user, UserDto.class);
+
                 userDtos.add(userDto);
             }
         } else {
@@ -81,45 +82,56 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResponseEntity<UserDto> addUser(User user) throws Exception{
-        if (userRepository.existsByUsername(user.getUsername())) {
+    public ResponseEntity<UserDto> addUser(UserDto userDto) throws Exception{
+        User user = new User();
+        if (userRepository.existsByUsername(userDto.getUsername())) {
             throw new AlreadyExistsException("Username already exists !!!");
         }
-
-        if (userRepository.existsByEmail(user.getEmail())) {
+        if (userRepository.existsByEmail(userDto.getEmail())) {
             throw new AlreadyExistsException("Email is already taken");
         }
 
+        userDto.setStatus(1);
+        userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
+
+        user = modelMapper.map(userDto, user.getClass());
+
         List<Role> roles = new ArrayList<>();
-        roles.add(roleRepository.findByName("USER"));
+        roles.add(roleRepository.findByName("ROLE_USER"));
         user.setRoles(roles);
-        user.setStatus(1);
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         User newUser = userRepository.save(user);
-        UserDto userDto = modelMapper.map(newUser, UserDto.class);
 
-        return new ResponseEntity<>(userDto, HttpStatus.CREATED);
+        UserDto newUserDto = modelMapper.map(newUser, UserDto.class);
+        newUserDto.setRolesName(newUser.getRoles());
+
+        return new ResponseEntity<>(newUserDto, HttpStatus.CREATED);
     }
 
     @Override
-    public ResponseEntity<UserDto> updateUser(Long id, User user) {
-        user.setId(id);
-        User oldUser = userRepository.findById(user.getId()).orElse(null);
+    public ResponseEntity<UserDto> updateUser(Long id, UserDto userDto) {
+        User updateUser = new User();
+        userDto.setId(id);
+        User oldUser = userRepository.findById(id).orElse(null);
         if (oldUser != null) {
+            userDto.setStatus(oldUser.getStatus());
+            userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
+            userDto.setCreateAt(oldUser.getCreateAt());
+
             List<Role> roles = new ArrayList<>();
             for (GrantedAuthority roleNames : oldUser.getAuthorities()) {
                 roles.add(roleRepository.findByName(roleNames.toString()));
             }
-            user.setRoles(roles);
-            user.setStatus(oldUser.getStatus());
-            user.setPassword(passwordEncoder.encode(user.getPassword()));
-            user.setCreateAt(oldUser.getCreateAt());
-            oldUser = modelMapper.map(user, oldUser.getClass());
-            User updateUser = userRepository.save(oldUser);
-            UserDto userDto = modelMapper.map(updateUser, UserDto.class);
+            updateUser.setRoles(roles);
 
-            return new ResponseEntity<>(userDto, HttpStatus.CREATED);
+            oldUser = modelMapper.map(userDto, oldUser.getClass());
+            oldUser.setRoles(updateUser.getRoles());
+            updateUser = userRepository.save(oldUser);
+
+            UserDto updateUserDto = modelMapper.map(updateUser, UserDto.class);
+            updateUserDto.setRolesName(updateUser.getRoles());
+
+            return new ResponseEntity<>(updateUserDto, HttpStatus.CREATED);
         }
 
         throw new NotFoundException("Not found user in system");
@@ -129,8 +141,9 @@ public class UserServiceImpl implements UserService {
     public ResponseEntity<Object> deleteUser(Long id) {
         User user = userRepository.findById(id).orElse(null);
         if (user != null) {
+            String username = user.getName();
             userRepository.delete(user);
-            return ResponseEntity.ok("You successfully deleted user id = " + id);
+            return ResponseEntity.ok("You successfully deleted user: " + username);
         }
 
         throw new NotFoundException("Not found user in system");

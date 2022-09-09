@@ -2,6 +2,7 @@ package com.htphuoc.bookstore.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.htphuoc.bookstore.model.Role;
 import lombok.*;
 
 import javax.persistence.Temporal;
@@ -10,7 +11,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserDto {
@@ -44,9 +46,23 @@ public class UserDto {
 
     private Integer status;
 
-//    private List<Role> roles = new ArrayList<>();
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private List<Role> roles = new ArrayList<>();
+
+    private List<String> rolesName = new ArrayList<>();
 
     private List<BookRatingDto> bookRatingDtos = new ArrayList<>();
 
     private List<OrderDto> orderDtos = new ArrayList<>();
+
+    // function
+    public List<String> setRolesName(List<Role> roleList) {
+        List<String> roleName = new ArrayList<>();
+        for (Role role : roleList) {
+            roleName.add(role.getName());
+            rolesName = roleName;
+        }
+
+        return rolesName;
+    }
 }

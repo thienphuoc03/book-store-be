@@ -16,4 +16,6 @@ public interface PublishingCompanyService {
     ResponseEntity<PublishingCompanyDto> updatePublishingCompany(Long id, PublishingCompany publishingCompany);
 
     ResponseEntity<Object> deletePublishingCompany(Long id);
+
+    void createPublishingCompany(String name);
 }

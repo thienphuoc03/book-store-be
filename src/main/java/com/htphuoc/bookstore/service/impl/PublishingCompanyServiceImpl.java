@@ -1,11 +1,10 @@
 package com.htphuoc.bookstore.service.impl;
 
 import com.htphuoc.bookstore.dto.PublishingCompanyDto;
-import com.htphuoc.bookstore.dto.UserDto;
 import com.htphuoc.bookstore.exception.AlreadyExistsException;
 import com.htphuoc.bookstore.exception.NotFoundException;
+import com.htphuoc.bookstore.model.Author;
 import com.htphuoc.bookstore.model.PublishingCompany;
-import com.htphuoc.bookstore.model.User;
 import com.htphuoc.bookstore.repository.PublishingCompanyRepository;
 import com.htphuoc.bookstore.service.PublishingCompanyService;
 import org.modelmapper.ModelMapper;
@@ -99,5 +98,12 @@ public class PublishingCompanyServiceImpl implements PublishingCompanyService {
         }
 
         throw new NotFoundException("PublishingCompany not found with id = " + id);
+    }
+
+    @Override
+    public void createPublishingCompany(String name) {
+        PublishingCompany newPublishingCompany = new PublishingCompany();
+        newPublishingCompany.setName(name);
+        publishingCompanyRepository.save(newPublishingCompany);
     }
 }

@@ -14,4 +14,6 @@ public interface AuthorService {
     ResponseEntity<AuthorDto> updateAuthor(Long id, Author author);
 
     ResponseEntity<Object> deleteAuthor(Long id);
+
+    void createAuthor(String name);
 }

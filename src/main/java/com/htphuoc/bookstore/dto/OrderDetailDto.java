@@ -1,8 +1,11 @@
 package com.htphuoc.bookstore.dto;
 
-import lombok.Data;
+import lombok.*;
 
-@Data
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class OrderDetailDto {
     private Long id;
 

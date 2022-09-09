@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -49,41 +48,49 @@ public class WebSecurityConfig {
 		// login api
 		http.authorizeRequests().antMatchers("/api/login").permitAll();
 
+		//ROLE
+		http.authorizeRequests().antMatchers("/api/roles*").hasRole("ADMIN");
+
+		//USER
 		http.authorizeRequests().antMatchers(HttpMethod.GET, "/api/users*")
-										.hasAnyRole("ADMIN", "MANAGER", "EMPLOYEE")
+									.hasAnyRole("ADMIN", "MANAGER", "EMPLOYEE")
 								.antMatchers(HttpMethod.POST, "/api/users*")
-										.hasAnyRole("ADMIN", "USER")
+									.hasAnyRole("ADMIN", "USER")
 								.antMatchers(HttpMethod.PUT, "/api/users/*/*")
-										.hasAnyRole("ADMIN", "MANAGER", "USER")
+									.hasAnyRole("ADMIN", "MANAGER", "USER")
 								.antMatchers(HttpMethod.DELETE, "/api/users/*")
-										.hasAnyRole("ADMIN", "MANAGER");
+									.hasAnyRole("ADMIN", "MANAGER");
 
+		//CATEGORY
 		http.authorizeRequests().antMatchers(HttpMethod.GET, "/api/categories*")
-										.hasAnyRole("ADMIN", "MANAGER", "EMPLOYEE")
+									.hasAnyRole("ADMIN", "MANAGER", "EMPLOYEE")
 								.antMatchers(HttpMethod.POST, "/api/categories*")
-										.hasAnyRole("ADMIN", "MANAGER")
+									.hasAnyRole("ADMIN", "MANAGER")
 								.antMatchers(HttpMethod.PUT, "/api/categories*")
-										.hasAnyRole("ADMIN", "MANAGER")
+									.hasAnyRole("ADMIN", "MANAGER")
 								.antMatchers(HttpMethod.DELETE, "/api/categories*")
-										.hasAnyRole("ADMIN", "MANAGER");
+									.hasAnyRole("ADMIN", "MANAGER");
 
+		//AUTHOR
 		http.authorizeRequests().antMatchers(HttpMethod.GET, "/api/authors*")
-										.hasAnyRole("ADMIN", "MANAGER", "EMPLOYEE")
+									.hasAnyRole("ADMIN", "MANAGER", "EMPLOYEE")
 								.antMatchers(HttpMethod.POST, "/api/authors*")
-										.hasAnyRole("ADMIN", "MANAGER")
+									.hasAnyRole("ADMIN", "MANAGER")
 								.antMatchers(HttpMethod.PUT, "/api/authors*")
-										.hasAnyRole("ADMIN", "MANAGER")
+									.hasAnyRole("ADMIN", "MANAGER")
 								.antMatchers(HttpMethod.DELETE, "/api/authors*")
-										.hasAnyRole("ADMIN", "MANAGER");
+									.hasAnyRole("ADMIN", "MANAGER");
 
+
+		//PUBLISHING COMPANY
 		http.authorizeRequests().antMatchers(HttpMethod.GET, "/api/publishing-companies*")
-				.hasAnyRole("ADMIN", "MANAGER", "EMPLOYEE")
-				.antMatchers(HttpMethod.POST, "/api/publishing-companies*")
-				.hasAnyRole("ADMIN", "MANAGER")
-				.antMatchers(HttpMethod.PUT, "/api/publishing-companies*")
-				.hasAnyRole("ADMIN", "MANAGER")
-				.antMatchers(HttpMethod.DELETE, "/api/publishing-companies*")
-				.hasAnyRole("ADMIN", "MANAGER");
+									.hasAnyRole("ADMIN", "MANAGER", "EMPLOYEE")
+								.antMatchers(HttpMethod.POST, "/api/publishing-companies*")
+									.hasAnyRole("ADMIN", "MANAGER")
+								.antMatchers(HttpMethod.PUT, "/api/publishing-companies*")
+									.hasAnyRole("ADMIN", "MANAGER")
+								.antMatchers(HttpMethod.DELETE, "/api/publishing-companies*")
+									.hasAnyRole("ADMIN", "MANAGER");
 
 		http.authorizeRequests().anyRequest().authenticated();
 

@@ -75,4 +75,11 @@ public class AuthorServiceImpl implements AuthorService {
 
         throw new NotFoundException("Author not found with id = " + id);
     }
+
+    @Override
+    public void createAuthor(String name) {
+        Author newAuthor = new Author();
+        newAuthor.setName(name);
+        authorRepository.save(newAuthor);
+    }
 }

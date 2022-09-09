@@ -1,0 +1,23 @@
+package com.htphuoc.bookstore.service;
+
+import com.htphuoc.bookstore.dto.BookDto;
+import com.htphuoc.bookstore.model.Book;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
+
+@Component
+public interface BookService {
+    ResponseEntity<Object> getAllBook(Integer page, Integer size);
+
+    ResponseEntity<BookDto> getBookById(Long id);
+
+    ResponseEntity<Object> searchBooks(String keyword);
+
+    ResponseEntity<Object> getBookByCategoryId(Long id, Integer page, Integer size);
+
+    ResponseEntity<BookDto> addBook(BookDto bookDto) throws Exception;
+
+    ResponseEntity<BookDto> updateBook(Long id, BookDto bookDto);
+
+    ResponseEntity<Object> deleteBook(Long id);
+}

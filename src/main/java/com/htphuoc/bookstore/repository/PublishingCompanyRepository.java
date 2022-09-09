@@ -9,4 +9,6 @@ import javax.validation.constraints.NotBlank;
 @Repository
 public interface PublishingCompanyRepository extends JpaRepository<PublishingCompany, Long> {
     Boolean existsByName(@NotBlank String name);
+
+    PublishingCompany findByName(String name);
 }

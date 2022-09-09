@@ -1,8 +1,9 @@
 package com.htphuoc.bookstore.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.htphuoc.bookstore.model.Author;
+import com.htphuoc.bookstore.model.Category;
+import com.htphuoc.bookstore.model.PublishingCompany;
+import lombok.*;
 
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -10,21 +11,28 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class BookDto {
     private Long id;
 
+    private String avatar;
+
     private String name;
+
+    private List<String> categories = new ArrayList<>();
+
+    private List<String> authors = new ArrayList<>();
+
+    private String publishing_company;
+
+    private String description;
 
     private Long price;
 
     private Integer quantity;
-
-    private String description;
-
-    private String avatar;
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;
@@ -36,15 +44,35 @@ public class BookDto {
 
     private String modifyBy;
 
-    private Integer status;
-
     private List<BookRatingDto> bookRatingDtos = new ArrayList<>();
-
-    private Integer publishing_company_id;
 
     private List<OrderDetailDto> orderDetailDtos = new ArrayList<>();
 
-    private Integer category_id;
+    private Integer status;
 
-    private Integer author_id;
+    //function
+    public String publishingCompanyName(PublishingCompany publishingCompany) {
+
+        return publishing_company = publishingCompany.getName();
+    }
+
+    public List<String> setCategoryName(List<Category> categoryList) {
+        List<String> categoryName = new ArrayList<>();
+        for (Category category : categoryList) {
+            categoryName.add(category.getName());
+            categories = categoryName;
+        }
+
+        return categories;
+    }
+
+    public List<String> setAuthorName(List<Author> authorList) {
+        List<String> authorName = new ArrayList<>();
+        for (Author author : authorList) {
+            authorName.add(author.getName());
+            authors = authorName;
+        }
+
+        return authors;
+    }
 }

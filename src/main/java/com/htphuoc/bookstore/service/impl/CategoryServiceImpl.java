@@ -2,6 +2,7 @@ package com.htphuoc.bookstore.service.impl;
 
 import com.htphuoc.bookstore.dto.CategoryDto;
 import com.htphuoc.bookstore.exception.NotFoundException;
+import com.htphuoc.bookstore.model.Author;
 import com.htphuoc.bookstore.model.Category;
 import com.htphuoc.bookstore.repository.CategoryRepository;
 import com.htphuoc.bookstore.service.CategoryService;
@@ -67,5 +68,12 @@ public class CategoryServiceImpl implements CategoryService {
         }
 
         throw new NotFoundException("Category not found with id = " + id);
+    }
+
+    @Override
+    public void createCategory(String name) {
+        Category newCategory = new Category();
+        newCategory.setName(name);
+        categoryRepository.save(newCategory);
     }
 }

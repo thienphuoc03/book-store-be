@@ -18,9 +18,9 @@ public interface UserService {
 
     ResponseEntity<Object> searchUser(String keyword);
 
-    ResponseEntity<UserDto> addUser(User user) throws Exception;
+    ResponseEntity<UserDto> addUser(UserDto userDto) throws Exception;
 
-    ResponseEntity<UserDto> updateUser(Long id, User user);
+    ResponseEntity<UserDto> updateUser(Long id, UserDto userDto);
 
     ResponseEntity<Object> deleteUser(Long id);
 

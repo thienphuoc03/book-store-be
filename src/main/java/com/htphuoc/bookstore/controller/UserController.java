@@ -33,13 +33,13 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<UserDto> addUser(@Valid @RequestBody User user) throws Exception {
-        return userService.addUser(user);
+    public ResponseEntity<UserDto> addUser(@Valid @RequestBody UserDto userDto) throws Exception {
+        return userService.addUser(userDto);
     }
 
     @PutMapping("/update/{id}")
-    private ResponseEntity<UserDto> updateUser(@PathVariable(name = "id") Long id,@Valid @RequestBody User user) {
-        return userService.updateUser(id, user);
+    private ResponseEntity<UserDto> updateUser(@PathVariable(name = "id") Long id,@Valid @RequestBody UserDto userDto) {
+        return userService.updateUser(id, userDto);
     }
 
     @DeleteMapping("/{id}")
