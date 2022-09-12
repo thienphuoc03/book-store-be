@@ -119,37 +119,10 @@ public class BookServiceImpl implements BookService {
         }
 
         bookDto.setStatus(1);
-
         modelMapper.map(bookDto, book);
-
-        List<Category> categories = new ArrayList<>();
-        for (String categoryName : bookDto.getCategories()) {
-            Category category = categoryRepository.findByName(categoryName);
-            if (category != null) {
-                categoryService.createCategory(categoryName);
-            }
-            categories.add(category);
-        }
-        book.setCategories(categories);
-
-        List<Author> authors = new ArrayList<>();
-        for (String authorName : bookDto.getAuthors()) {
-            Author author = authorRepository.findByName(authorName);
-            if (author == null) {
-                authorService.createAuthor(authorName);
-            }
-            authors.add(author);
-        }
-        book.setAuthors(authors);
-
-        PublishingCompany publishingCompany = publishingCompanyRepository.findByName(bookDto.getPublishing_company());
-        if (publishingCompany == null) {
-            publishingCompanyService.createPublishingCompany(bookDto.getPublishing_company());
-        }
-        book.setPublishingCompany(publishingCompany);
+        checkAndAddInfBook(book, bookDto);
 
         Book newBook = bookRepository.save(book);
-
         BookDto newBookDto = modelMapper.map(newBook, BookDto.class);
 
         return new ResponseEntity<>(newBookDto, HttpStatus.CREATED);
@@ -157,9 +130,27 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public ResponseEntity<BookDto> updateBook(Long id, BookDto bookDto) {
+        Book oldBook = bookRepository.findById(id).orElse(null);
+        if (oldBook != null) {
+            bookDto.setCreatedAt(oldBook.getCreatedAt());
+            bookDto.setCreatedBy(oldBook.getCreatedBy());
+            bookDto.setStatus(oldBook.getStatus());
 
+            modelMapper.map(bookDto, oldBook.getClass());
 
-        return null;
+            checkAndAddInfBook(oldBook, bookDto);
+
+            Book updateBook = bookRepository.save(oldBook);
+
+            BookDto updateBookDto = modelMapper.map(updateBook, BookDto.class);
+            updateBookDto.setCategoryName(updateBook.getCategories());
+            updateBookDto.setAuthorName(updateBook.getAuthors());
+            updateBookDto.publishingCompanyName(updateBook.getPublishingCompany());
+
+            return new ResponseEntity<>(bookDto, HttpStatus.CREATED);
+        }
+
+        throw new NotFoundException("Not found book");
     }
 
     @Override
@@ -196,5 +187,36 @@ public class BookServiceImpl implements BookService {
                 bookDtos.add(bookDto);
             }
         }
+    }
+
+    private void checkAndAddInfBook(Book book, BookDto bookDto) {
+        //set category and check if not exists then create new
+        List<Category> categories = new ArrayList<>();
+        for (String categoryName : bookDto.getCategories()) {
+            Category category = categoryRepository.findByName(categoryName);
+            if (category != null) {
+                categoryService.createCategory(categoryName);
+            }
+            categories.add(category);
+        }
+        book.setCategories(categories);
+
+        //set author and check if not exists then create new
+        List<Author> authors = new ArrayList<>();
+        for (String authorName : bookDto.getAuthors()) {
+            Author author = authorRepository.findByName(authorName);
+            if (author == null) {
+                authorService.createAuthor(authorName);
+            }
+            authors.add(author);
+        }
+        book.setAuthors(authors);
+
+        // Set Publishing Company and check if not exists then create new
+        PublishingCompany publishingCompany = publishingCompanyRepository.findByName(bookDto.getPublishing_company());
+        if (publishingCompany == null) {
+            publishingCompanyService.createPublishingCompany(bookDto.getPublishing_company());
+        }
+        book.setPublishingCompany(publishingCompany);
     }
 }

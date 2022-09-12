@@ -43,13 +43,13 @@ public class BookController {
         return bookService.addBook(bookDto);
     }
 
-    @PutMapping("{/id}")
+    @PutMapping("/{id}")
     public ResponseEntity<BookDto> updateBook(@PathVariable(name = "id") Long id,
                                               @Valid @RequestBody BookDto bookDto) {
         return bookService.updateBook(id, bookDto);
     }
 
-    @DeleteMapping("{/id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Object> deleteBook(@PathVariable(name = "id") Long id) {
         return bookService.deleteBook(id);
     }

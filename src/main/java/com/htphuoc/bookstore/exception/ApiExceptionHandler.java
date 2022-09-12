@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -40,8 +41,8 @@ public class ApiExceptionHandler {
 	}
 
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	@ExceptionHandler(MethodArgumentNotValidException.class)
-	public ErrorDetails handleValidationExceptions(MethodArgumentNotValidException ex, HttpServletRequest request) {
+	@ExceptionHandler(BindException.class)
+	public ErrorDetails handleValidationExceptions(BindException ex, HttpServletRequest request) {
 		String fieldName = ((FieldError) ex.getBindingResult().getAllErrors().get(0)).getField();
 		String message = ex.getBindingResult().getAllErrors().get(0).getDefaultMessage();
 

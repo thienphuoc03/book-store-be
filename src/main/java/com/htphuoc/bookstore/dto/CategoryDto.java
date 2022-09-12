@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotBlank;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -15,6 +16,7 @@ import java.util.List;
 public class CategoryDto {
     private Long id;
 
+    @NotBlank(message = "Name is mandatory")
     private String name;
 
     @Temporal(TemporalType.TIMESTAMP)

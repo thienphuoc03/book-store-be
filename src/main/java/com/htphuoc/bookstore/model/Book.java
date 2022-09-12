@@ -1,6 +1,5 @@
 package com.htphuoc.bookstore.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
@@ -40,6 +39,7 @@ public class Book {
     private Integer quantity;
 
     @NotBlank
+    @Lob
     @Column(name = "description")
     private String description;
 

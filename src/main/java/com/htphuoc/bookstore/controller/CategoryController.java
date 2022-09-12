@@ -22,7 +22,7 @@ public class CategoryController {
     }
 
     @PostMapping
-    public ResponseEntity<CategoryDto> addCategory(@Valid @RequestBody Category category) {
+    public ResponseEntity<CategoryDto> addCategory(@RequestBody @Valid Category category) {
         return categoryService.addCategory(category);
     }
 

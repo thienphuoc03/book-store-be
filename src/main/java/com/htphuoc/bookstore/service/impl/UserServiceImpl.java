@@ -153,14 +153,14 @@ public class UserServiceImpl implements UserService {
 //    public ResponseEntity<Object> changePassword(Long id, ChangePassword changePassword) {
 //        User user = new User();
 //        user.setId(id);
-//        User oldUser = userRepository.findById(user.getId()).orElse(null);
+//        User oldUser = userRepository.findById(id).orElse(null);
 //        if (oldUser != null) {
 //            String oldPass = changePassword.getOldPassword();
 //            if (userRepository.existsByPassword(oldPass)) {
 //                String newPass = changePassword.getNewPassword();
 //                String reNewPass = changePassword.getReNewPassword();
 //                if (newPass == reNewPass) {
-//                    user.setPassword(newPass);
+//                    old.setPassword(newPass);
 //                    userRepository.save(user);
 //
 //                    return ResponseEntity.ok("Change password successfully");
