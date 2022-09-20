@@ -14,13 +14,17 @@ import com.htphuoc.bookstore.service.CategoryService;
 import com.htphuoc.bookstore.service.PublishingCompanyService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -49,12 +53,28 @@ public class BookServiceImpl implements BookService {
     @Autowired
     private PublishingCompanyService publishingCompanyService;
 
+//    @Override
+//    public ResponseEntity<Object> getAllBook(Integer page, Integer size) {
+//        List<BookDto> bookDtos = new ArrayList<>();
+//        if (page != null && size != null) {
+//            Pageable pageable = PageRequest.of(page - 1, size);
+//            List<Book> books = bookRepository.findAll(pageable).getContent();
+//            returnBookDtos(bookDtos, books);
+//        } else {
+//            List<Book> books = bookRepository.findAll();
+//            returnBookDtos(bookDtos, books);
+//        }
+//
+//        return new ResponseEntity<>(bookDtos, HttpStatus.OK);
+//    }
+
     @Override
     public ResponseEntity<Object> getAllBook(Integer page, Integer size) {
         List<BookDto> bookDtos = new ArrayList<>();
         if (page != null && size != null) {
-            Pageable pageable = PageRequest.of(page - 1, size);
+            Pageable pageable = PageRequest.of(page, size, Sort.Direction.DESC, "createdAt");
             List<Book> books = bookRepository.findAll(pageable).getContent();
+
             returnBookDtos(bookDtos, books);
         } else {
             List<Book> books = bookRepository.findAll();
@@ -84,9 +104,11 @@ public class BookServiceImpl implements BookService {
         for (Book book : books) {
             if (book.getName().equals(keyword)) {
                 BookDto bookDto = modelMapper.map(book, BookDto.class);
+
                 bookDto.setCategoryName(book.getCategories());
                 bookDto.setAuthorName(book.getAuthors());
                 bookDto.publishingCompanyName(book.getPublishingCompany());
+
                 bookDtos.add(bookDto);
             }
         }
@@ -164,7 +186,6 @@ public class BookServiceImpl implements BookService {
 
         throw new NotFoundException("Book not found");
     }
-
 
     // function
     private void returnBookDtos(List<BookDto> bookDtos, List<Book> books) {

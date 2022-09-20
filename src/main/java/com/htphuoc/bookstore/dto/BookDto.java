@@ -43,11 +43,11 @@ public class BookDto {
     private Date modifyAt;
 
     private String modifyBy;
-
-    private List<BookRatingDto> bookRatingDtos = new ArrayList<>();
-
-    private List<OrderDetailDto> orderDetailDtos = new ArrayList<>();
-
+//
+//    private List<BookRatingDto> bookRatingDtos = new ArrayList<>();
+//
+//    private List<OrderDetailDto> orderDetailDtos = new ArrayList<>();
+//
     private Integer status;
 
     //function
