@@ -92,6 +92,36 @@ public class WebSecurityConfig {
 								.antMatchers(HttpMethod.DELETE, "/api/publishing-companies*")
 									.hasAnyRole("ADMIN", "MANAGER");
 
+		//ORDER
+		http.authorizeRequests().antMatchers(HttpMethod.GET, "/api/orders*")
+									.hasAnyRole("ADMIN", "MANAGER", "EMPLOYEE")
+								.antMatchers(HttpMethod.POST, "/api/orders*")
+									.hasAnyRole("EMPLOYEE", "USER")
+								.antMatchers(HttpMethod.PUT, "/api/orders*")
+									.hasAnyRole("EMPLOYEE", "USER")
+								.antMatchers(HttpMethod.DELETE, "/api/orders*")
+									.hasAnyRole("EMPLOYEE", "USER");
+
+		//ORDER DETAIL
+		http.authorizeRequests().antMatchers(HttpMethod.GET, "/api/order-details*")
+									.hasAnyRole("ADMIN", "MANAGER", "EMPLOYEE")
+								.antMatchers(HttpMethod.POST, "/api/order-details*")
+									.hasAnyRole("EMPLOYEE", "USER")
+								.antMatchers(HttpMethod.PUT, "/api/order-details*")
+									.hasAnyRole("EMPLOYEE", "USER")
+								.antMatchers(HttpMethod.DELETE, "/api/order-details*")
+									.hasAnyRole("EMPLOYEE", "USER");
+
+		//ORDER STATE
+		http.authorizeRequests().antMatchers(HttpMethod.GET, "/api/order-states*")
+									.hasAnyRole("ADMIN", "MANAGER", "EMPLOYEE")
+								.antMatchers(HttpMethod.POST, "/api/order-states*")
+									.hasAnyRole("MANAGER", "EMPLOYEE")
+								.antMatchers(HttpMethod.PUT, "/api/order-states*")
+									.hasAnyRole("MANAGER", "EMPLOYEE")
+								.antMatchers(HttpMethod.DELETE, "/api/order-states*")
+									.hasAnyRole("MANAGER", "EMPLOYEE");
+
 		http.authorizeRequests().anyRequest().authenticated();
 
 		http.exceptionHandling().accessDeniedHandler(accessDeniedHandler)
