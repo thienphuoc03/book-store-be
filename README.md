@@ -41,7 +41,7 @@ create database bookstore
 |GET|/books/{id}|get book by id||
 |GET|/books/{id}/books|get book by category||
 |POST|/books|create book|[JSON](#bookCreate)|
-|PUT|/books/{id}|update book|[JSON](bookUpdate)|
+|PUT|/books/{id}|update book|[JSON](#bookUpdate)|
 |DELETE|/books/{id}|delete book||
 
 ## Sample Valid JSON Request Bodys
