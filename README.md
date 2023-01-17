@@ -11,7 +11,9 @@ create database bookstore
 - open file ```src/main/resources/application.properties```
 - change `spring.datasource.username` and `spring.datasource.password` your mysql
 
-***4. APIs (http://localhost:8080/api)*
+**4. APIs (http://localhost:8080/api)**
+## Explore Rest APIs
+
 ### USER
 | Method | Url | Description | Sample Valid Request Body |
 |--------|-----|-------------|---------------------------|
@@ -19,7 +21,7 @@ create database bookstore
 |GET|/users/{id}|get user by id||
 |GET|/users|search user|[JSON](#userSearch)|
 |POST|/users|create user|[JSON](#userCreate)|
-|PUT|/users/{id}|update user|[JSON](#userupdate)|
+|PUT|/users/{id}|update user|[JSON](#userUpdate)|
 |DELETE|/users/{id}|delete user||
 
 ### LOGIN
@@ -46,6 +48,7 @@ create database bookstore
 |DELETE|/books/{id}|delete book||
 
 ## Sample Valid JSON Request Bodys
+
 ##### <a id="userSearch">Search User -> /users</a>
 ```json
 {
