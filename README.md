@@ -19,7 +19,7 @@ create database bookstore
 |GET|/users/{id}|get user by id||
 |GET|/users|search user|[JSON](#userSearch)|
 |POST|/users|create user|[JSON](#userCreate)|
-|PUT|/users/{id}|update user|[JSON](#userUpdate)|
+|PUT|/users/{id}|update user|[JSON](#userupdate)|
 |DELETE|/users/{id}|delete user||
 
 ### LOGIN
@@ -29,6 +29,7 @@ create database bookstore
 
 ### CATEGORY
 | Method | Url | Description | Sample Valid Request Body |
+|--------|-----|-------------|---------------------------|
 |GET|/categories|get all category||
 |POST|/categories|create new category|[JSON](#categoryCreate)|
 |PUT|/categories/{id}|update category|[JSON](#categoryUpdate)|
