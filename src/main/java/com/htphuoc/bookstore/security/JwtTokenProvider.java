@@ -19,17 +19,17 @@ public class JwtTokenProvider {
 
 	private final String JWT_SECRET = "thienphuoc";
 
-	private final long JWT_EXPIRATION = 12 * 60 * 60 * 1000;
+	private final long JWT_EXPIRATION = 24 * 60 * 60 * 1000;
 
 	public String generateToken(CustomUserDetails userDetails) {
 		Date now = new Date();
 
 		Date expiryDate = new Date(now.getTime() + JWT_EXPIRATION);
 
-		String token = Jwts.builder().setSubject(userDetails.getUsername()).setIssuedAt(now).setExpiration(expiryDate)
+		String access_token = Jwts.builder().setSubject(userDetails.getUsername()).setIssuedAt(now).setExpiration(expiryDate)
 				.signWith(SignatureAlgorithm.HS512, Base64.getEncoder().encode(JWT_SECRET.getBytes())).compact();
 
-		return token;
+		return access_token;
 	}
 
 	public String getUsernameFromToken(String token) {

@@ -6,9 +6,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 public interface BookService {
-    ResponseEntity<Object> getAllBook(Integer page, Integer size);
+    List<BookDto> getAllBook(int page, int size, String sortBy);
 
     ResponseEntity<BookDto> getBookById(Long id);
 

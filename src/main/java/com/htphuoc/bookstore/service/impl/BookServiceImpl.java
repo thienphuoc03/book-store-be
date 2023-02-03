@@ -22,6 +22,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -53,35 +54,45 @@ public class BookServiceImpl implements BookService {
     @Autowired
     private PublishingCompanyService publishingCompanyService;
 
-//    @Override
-//    public ResponseEntity<Object> getAllBook(Integer page, Integer size) {
+    @Override
+    public List<BookDto> getAllBook(int page, int size, String sortBy) {
+        try {
+            Pageable paging = PageRequest.of(page - 1, size, Sort.by(sortBy).descending());
+            Page<Book> books = bookRepository.findAll(paging);
+
+            List<Book> bookList = books.getContent();
+            List<BookDto> bookDtos = new ArrayList<>();
+            for (Book book : bookList) {
+                BookDto bookDto = modelMapper.map(book, BookDto.class);
+                bookDto.setCategoryName(book.getCategories());
+                bookDto.setAuthorName(book.getAuthors());
+                bookDto.publishingCompanyName(book.getPublishingCompany());
+                bookDtos.add(bookDto);
+
+            }
+
+            return bookDtos;
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
+        return null;
+//        Page<Book> books = bookRepository.findAllBook(pageable);
+
+//        return bookRepository.findAllBooks(paging);
+
 //        List<BookDto> bookDtos = new ArrayList<>();
 //        if (page != null && size != null) {
-//            Pageable pageable = PageRequest.of(page - 1, size);
+//            Pageable pageable = PageRequest.of(page, size, Sort.Direction.DESC, "createdAt");
 //            List<Book> books = bookRepository.findAll(pageable).getContent();
-//            returnBookDtos(bookDtos, books);
+//
+//            return BookDtos(bookDtos, books);
 //        } else {
 //            List<Book> books = bookRepository.findAll();
-//            returnBookDtos(bookDtos, books);
+//            return BookDtos(bookDtos, books);
 //        }
 //
 //        return new ResponseEntity<>(bookDtos, HttpStatus.OK);
-//    }
-
-    @Override
-    public ResponseEntity<Object> getAllBook(Integer page, Integer size) {
-        List<BookDto> bookDtos = new ArrayList<>();
-        if (page != null && size != null) {
-            Pageable pageable = PageRequest.of(page, size, Sort.Direction.DESC, "createdAt");
-            List<Book> books = bookRepository.findAll(pageable).getContent();
-
-            returnBookDtos(bookDtos, books);
-        } else {
-            List<Book> books = bookRepository.findAll();
-            returnBookDtos(bookDtos, books);
-        }
-
-        return new ResponseEntity<>(bookDtos, HttpStatus.OK);
     }
 
     @Override

@@ -9,23 +9,20 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/books")
 public class BookController {
     @Autowired
     private BookService bookService;
 
-//    @GetMapping
-//    public ResponseEntity<Object> getAllBook(@RequestParam(name = "page", required = false, defaultValue = "") Integer page,
-//                                             @RequestParam(name = "size", required = false, defaultValue = "") Integer size) {
-//        return bookService.getAllBook(page, size);
-//    }
-
     @GetMapping
-    public ResponseEntity<Object> getAllBook(@RequestParam(name = "page", required = false, defaultValue = "") Integer page,
-                                             @RequestParam(name = "size", required = false, defaultValue = "") Integer size) {
-        return bookService.getAllBook(page, size);
+    public List<BookDto> getAllBook(@RequestParam(name = "page", defaultValue = "1") int page,
+                                 @RequestParam(name = "size", defaultValue = "5") int size,
+                                 @RequestParam(name = "sortBy", defaultValue = "createdAt") String sortBy) {
+        return bookService.getAllBook(page, size, sortBy);
     }
 
     @GetMapping("/{id}")
